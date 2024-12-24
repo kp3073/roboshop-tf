@@ -12,3 +12,13 @@ module "vpc" {
   default_vpc_cidr           = var.default_vpc_cidr
   default_vpc_route_table_id = var.default_vpc_route_table_id
 }
+
+module "mysql" {
+  source     = "git::https://github.com/kp3073/tf-module-rds.git"
+  vpc_cidr   = var.vpc_cidr
+  component  = "mysql"
+  env        = var.env
+  subnets    = module.vpc.private_subnet
+  vpc_id     = module.vpc.vpc_id
+  kms_key_id = var.kms_key_id
+}
